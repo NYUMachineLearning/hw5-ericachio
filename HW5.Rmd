@@ -3,8 +3,10 @@ title: 'Machine Learning 2019: Tree-Based Methods'
 author: "Sonali Narang"
 date: "10/28/2019"
 output:
-  pdf_document: default
+  html_document:
+    df_print: paged
   pdf: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -199,7 +201,9 @@ abline(h = min(test.err), col = "red")
 library(rpart)
 ```
 
-
+A regression tree was created for the boston housing data. The target value is medv which is  median value of owner-occupied homes in USD 1000’s.
+Key varibles were rm ( average number of rooms per dwelling), lstat(percentage of lower status of the population), and dis (weighted distances to five Boston employment centres).
+A regression tree paritions it into smaller groups. If we bag the tree, we can decrease its variance.  
 ```{r}
 fit <- rpart(medv ~ .-medv, method="anova", data=boston)
 
@@ -213,7 +217,7 @@ rsq.rpart(fit)
 tree.boston =  plot(fit, uniform=TRUE, main="regression tree for boston housing")
 text(fit, use.n=TRUE, all=TRUE, cex=.8)
 ```
-A regression tree paritions it into smaller groups. If we bag the tree, we can decrease its variance.  
+
 
 
 
@@ -225,9 +229,12 @@ carseats
 # head(carseats)
 ```
 
-
+In bagging, we are decreasing the variance.
+Our test error is generally close to the OOB, meaning that we have a generally good estimate to true test error. 
 ```{r}
 #bagging
+
+#The OOB is calculated from observations not part of the bootstrap models in an effort to calculate the miscalculation error. 
 
 #set seed for reproducibility 
 set.seed(29)
@@ -264,6 +271,7 @@ legend("topright", legend = c("OOB", "Test"), pch = 23, col = c("red", "blue"))
 ```
 
 
+Boosting is when each tree is dependent on the tree before it, so that each iteration becomes closer and closer to fitting the data. Looking at our plot, we see that MSE (mean squared error) is lowest around 900/1000 trees before it levels out. 
 ```{r}
 #boasting
 
